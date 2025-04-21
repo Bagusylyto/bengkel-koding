@@ -1,95 +1,92 @@
 @extends('layout')
+
 @section('sidebar')
-
-    <li class="nav-item menu-open">
-      <a href="/pasien" class="nav-link {{ Request::is('/pasien') ? 'active' : '' }}">
-        <i class="nav-icon fas fa-tachometer-alt"></i>
-        <p>
-          Dashboard
-          <i class="right fas fa-angle-left"></i>
-        </p>
-      </a>
-    </li>
-
-    <li class="nav-item">
-      <a href="/pasien/periksa" class="nav-link {{ Request::is('pasien/periksa*') ? 'active' : '' }}">
-        <i class="nav-icon fas fa-th"></i>
-        <p>
-          Periksa
-          <span class="right badge badge-danger">New</span>
-        </p>
-      </a>
-    </li>
-
-    <li class="nav-item">
-      <a href="/pasien/riwayat" class="nav-link {{ Request::is('pasien/riwayat*') ? 'active' : '' }}">
-        <i class="nav-icon far fa-calendar-alt"></i>
-        <p>
-          Riwayat
-          <span class="badge badge-info right">{{ $periksas->count() }}</span>
-        </p>
-      </a>
-    </li>
-
+    <!-- Sidebar Menu -->
+    <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            <li class="nav-item">
+                <a href="{{ route('pasien.dashboard') }}" class="nav-link">
+                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                    <p>Dashboard</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ route('pasien.periksa') }}" class="nav-link active">
+                    <p>Periksa</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ route('pasien.riwayat') }}" class="nav-link">
+                    <p>Riwayat</p>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <!-- /.sidebar-menu -->
 @endsection
 
 @section('content')
+    <!-- Content Header (Page header) -->
+    <section class="content-header"></section>
 
-   <section class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1>Pasien</h1>
-          </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Simple Tables</li>
-            </ol>
-          </div>
-        </div>
-      </div>
-    </section>
-
+    <!-- Main content -->
     <section class="content">
-      <div class="container-fluid">
-        
-        <div class="row">
-          <div class="col-12">
-            
-            <!-- Form Tambah Obat -->
-            <div class="card">
-              <div class="card-header bg-primary text-white">
-                <h3 class="card-title">Periksa</h3>
-              </div>
-              <div class="card-body">
-                <form action="/dokter/obat/store" method="POST">
-                  @csrf
-                  <div class="form-group">
-                    <label for="nama_obat">Nama Anda</label>
-                    <input type="text" name="nama_obat" class="form-control" placeholder="Input obat's name" required>
-                  </div>
-                  <div class="form-group">
-                    <label for="kemasan">Pilih Dokter</label>
-                    <select name="kemasan" class="form-control" required>
-                      <option value="" disabled selected>Pilih Dokter</option>
-                      <option value="Botol">Botol</option>
-                      <option value="Strip">Strip</option>
-                      <option value="Box">Box</option>
-                      <option value="Sachet">Sachet</option>
-                    </select>
-                  </div>
-                  
-                  
-                  <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
-              </div>
+        <div class="container-fluid">
+            <div class="row">
+                <!-- left column -->
+                <div class="col-md-6">
+                    <!-- general form elements -->
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">Periksa</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <!-- form start -->
+                        <form action="{{ route('pasien.periksa.store') }}" method="POST">
+                            @csrf
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="id_dokter">Pilih Dokter</label>
+                                    <select class="custom-select rounded-0" id="id_dokter" name="id_dokter" required>
+                                        <option value="" disabled selected>Pilih Dokter</option>
+                                        @foreach ($dokters as $dokter)
+                                            <option value="{{ $dokter->id }}" {{ old('id_dokter') == $dokter->id ? 'selected' : '' }}>
+                                                {{ $dokter->nama }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @error('id_dokter')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="tgl_periksa">Pilih Tanggal & Waktu</label>
+                                    <input type="datetime-local" class="form-control" id="tgl_periksa" name="tgl_periksa" 
+                                           value="{{ old('tgl_periksa', now()->format('Y-m-d\TH:i')) }}" required>
+                                    @error('tgl_periksa')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.card -->
+                </div>
             </div>
-            
-           
-          </div>
-        </div>
-      </div>
+            <!-- /.row -->
+        </div><!-- /.container-fluid -->
     </section>
-    
+    <!-- /.content -->
 @endsection
+
+<!-- bs-custom-file-input -->
+<script src="{{ asset('lte/plugins/bs-custom-file-input/bs-custom-file-input.min.js') }}"></script>
+
+<script>
+    $(function() {
+        bsCustomFileInput.init();
+    });
+</script>

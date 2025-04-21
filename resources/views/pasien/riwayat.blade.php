@@ -1,126 +1,131 @@
 @extends('layout')
+
 @section('sidebar')
-
-    <li class="nav-item menu-open">
-      <a href="/pasien" class="nav-link {{ Request::is('/pasien') ? 'active' : '' }}">
-        <i class="nav-icon fas fa-tachometer-alt"></i>
-        <p>
-          Dashboard
-          <i class="right fas fa-angle-left"></i>
-        </p>
-      </a>
-    </li>
-
-    <li class="nav-item">
-      <a href="/pasien/periksa" class="nav-link {{ Request::is('pasien/periksa*') ? 'active' : '' }}">
-        <i class="nav-icon fas fa-th"></i>
-        <p>
-          Periksa
-          <span class="right badge badge-danger">New</span>
-        </p>
-      </a>
-    </li>
-
-    <li class="nav-item">
-      <a href="/pasien/riwayat" class="nav-link {{ Request::is('pasien/riwayat*') ? 'active' : '' }}">
-        <i class="nav-icon far fa-calendar-alt"></i>
-        <p>
-          Riwayat
-          <span class="badge badge-info right">{{ $periksas->count() }}</span>
-        </p>
-      </a>
-    </li>
-
+    <!-- Sidebar Menu -->
+    <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            <li class="nav-item">
+                <a href="{{ route('pasien.dashboard') }}" class="nav-link">
+                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                    <p>Dashboard</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ route('pasien.periksa') }}" class="nav-link">
+                    <p>Periksa</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ route('pasien.riwayat') }}" class="nav-link active">
+                    <p>Riwayat</p>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <!-- /.sidebar-menu -->
 @endsection
 
 @section('content')
-
-   <section class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1>Pasien</h1>
-          </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Simple Tabless</li>
-            </ol>
-          </div>
-        </div>
-      </div><!-- /.container-fluid -->
-    </section>
+    <!-- Content Header (Page header) -->
+    @if (session('success'))
+    <div class="alert alert-success alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <h5><i class="icon fas fa-check"></i> Sukses!</h5>
+        {{ session('success') }}
+    </div>
+@endif
+@if (session('error'))
+    <div class="alert alert-danger alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <h5><i class="icon fas fa-exclamation-triangle"></i> Error!</h5>
+        {{ session('error') }}
+    </div>
+@endif
+    <section class="content-header"></section>
+    <!-- /.content-header -->
 
     <!-- Main content -->
     <section class="content">
-      <div class="container-fluid">
-        
-        <!-- /.row -->
-        <div class="row">
-          <div class="col-12">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">Data Periksa</h3>
-
-                <div class="card-tools">
-                  <div class="input-group input-group-sm" style="width: 150px;">
-                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-
-                    <div class="input-group-append">
-                      <button type="submit" class="btn btn-default">
-                        <i class="fas fa-search"></i>
-                      </button>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Riwayat Periksa</h3>
+                            <div class="card-tools">
+                                <div class="input-group input-group-sm" style="width: 150px;">
+                                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+                                    <div class="input-group-append">
+                                        <button type="submit" class="btn btn-default">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body table-responsive p-0">
+                            <table class="table table-hover text-nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Dokter</th>
+                                        <th>Tanggal Periksa</th>
+                                        <th>Biaya Periksa</th>
+                                        <th>Detail</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($periksas as $periksa)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $periksa->dokter->nama }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($periksa->tgl_periksa)->format('d-m-Y H:i') }}</td>
+                                        <td><span class="badge badge-success">{{ $periksa->biaya_periksa }}</span></td>
+                                        <td>
+                                            <a href="#" data-toggle="modal" data-target="#modalDetail{{ $periksa->id }}">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <!-- Modal Detail untuk setiap pemeriksaan -->
+                                    <div class="modal fade" id="modalDetail{{ $periksa->id }}" tabindex="-1" role="dialog" aria-labelledby="modalLabel{{ $periksa->id }}" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Detail Pemeriksaan</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p><strong>Dokter:</strong> {{ $periksa->dokter->nama }}</p>
+                                                    <p><strong>Tanggal Periksa:</strong> {{ \Carbon\Carbon::parse($periksa->tgl_periksa)->format('d-m-Y H:i') }}</p>
+                                                    <p><strong>Biaya:</strong> {{ $periksa->biaya_periksa }}</p>
+                                                    <p><strong>Catatan:</strong> {{ $periksa->catatan ?? 'Belum Ada Catatan' }}</p>
+                                                    <p><strong>Obat:</strong></p>
+                                                    <ul>
+                                                        @forelse ($periksa->detailPeriksas as $detail)
+                                                            <li>{{ $detail->obat->nama_obat }} | {{ $detail->obat->kemasan }}</li>
+                                                        @empty
+                                                            <li>-</li>
+                                                        @endforelse
+                                                    </ul>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                  </div>
                 </div>
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body table-responsive p-0">
-                <table class="table table-hover text-nowrap">
-                  <thead>
-                    <tr>
-                      <th>ID</th>
-                      <th>ID Periksa</th>
-                      <th>Nama Dokter</th>
-                      <th>Tanggal Periksa</th>
-                      <th>Catatan</th>
-                      <th>Obat</th>
-                      <th>Biaya Periksa</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    @foreach ($Detailperiksas as $Detailperiksa)
-
-                    <tr>
-                        <td>{{$loop->iteration}}</td>
-                        <td>{{$Detailperiksa->periksa->id}}</td>
-                        <td>{{$Detailperiksa->periksa->dokter->nama}}</td>
-                        <td>{{$Detailperiksa->periksa->tgl_periksa}}</td>
-                        <td><span class="tag tag-success">{{$Detailperiksa->periksa->catatan}}</span></td>
-                        <td>{{$Detailperiksa->obat->nama_obat}}</td>
-                        <td>{{$Detailperiksa->periksa->biaya_periksa}}</td>
-                      </tr>
-                     
-                        
-                    @endforeach
-                   
-                  </tbody>
-                </table>
-              </div>
-              <!-- /.card-body -->
             </div>
-            <!-- /.card -->
-          </div>
         </div>
-        <!-- /.row -->
-        
-        <!-- /.row -->
-        
-        <!-- /.row -->
-       
-        <!-- /.row -->
-      </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
-    
 @endsection

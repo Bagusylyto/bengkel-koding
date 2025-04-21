@@ -44,7 +44,7 @@
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Simple Tables</li>
+              <li class="breadcrumb-item active">Dashboard v1</li>
             </ol>
           </div>
         </div>
@@ -63,7 +63,7 @@
                 <h3 class="card-title">Form Tambah Obat</h3>
               </div>
               <div class="card-body">
-                <form action="/dokter/obat/store" method="POST">
+                <form action="{{ route('dokter.obatStore') }}" method="POST">
                   @csrf
                   <div class="form-group">
                     <label for="nama_obat">Nama Obat</label>
@@ -120,10 +120,10 @@
                         <td>{{$obat->kemasan}}</td>
                         <td>{{$obat->harga}}</td>
                         <td>
-                          <a href="" class="btn btn-warning btn-sm">
+                          <a href="{{ route('dokter.obatEdit', $obat->id) }}" class="btn btn-warning btn-sm">
                             <i class="fas fa-edit"></i> Edit
                           </a>
-                          <form action="" method="POST" style="display:inline;">
+                          <form action="{{ route('dokter.obatDelete', $obat->id) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus obat ini?');">
