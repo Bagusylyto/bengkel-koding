@@ -12,13 +12,13 @@
                     </p>
                 </a>
             </li>
-            {{-- <li class="nav-item">
+            <li class="nav-item">
                 <a href="{{ route('dokter.periksa') }}" class="nav-link ">
                     <p>
                         Periksa
                     </p>
                 </a>
-            </li> --}}
+            </li>
             <li class="nav-item">
                 <a href="{{ route('dokter.obat') }}" class="nav-link active">
                     <p>
@@ -48,7 +48,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Manajemen Obat</h1>
+                    <h1 class="m-0">Periksa Pasien</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                 </div><!-- /.col -->
@@ -69,32 +69,60 @@
                         <!-- general form elements -->
                         <div class="card card-primary">
                             <div class="card-header">
-                                <h3 class="card-title">Manajemen Obat</h3>
+                                <h3 class="card-title">Periksa Pasien</h3>
                             </div>
                             <!-- /.card-header -->
                             <!-- form start -->
-                            <form method="POST" action="{{ route('dokter.obatUpdate',$obat->id) }}">
+                            <form method="POST" action="{{ route('dokter.periksaUpdate',$periksa->id) }}">
                                 @csrf
                                 @method('PUT')
                                 <div class="card-body">
                                     <div class="form-group">
-                                        <label for="exampleInputEmail1">Nama Obat</label>
-                                        <input value="{{ $obat->nama_obat }}" type="text" name="nama_obat" class="form-control" id="exampleInputEmail1"
-                                            placeholder="Input obat's name">
+                                        <label for="exampleInputEmail1">Catatan</label>
+                                        <input value="{{ $periksa->catatan }}" type="text" name="catatan" class="form-control" id="exampleInputEmail1"
+                                            placeholder="Catatan untuk pasien">
                                     </div>
                                     <div class="form-group">
-                                        <label for="exampleInputEmail1">Kemasan</label>
-                                        <input value="{{ $obat->kemasan }}" type="text" name="kemasan" class="form-control" id="exampleInputEmail1"
+                                        <label for="exampleInputEmail1">Biaya Periksa</label>
+                                        <input value="{{ $periksa->biaya_periksa }}" type="text" name="biaya_periksa" class="form-control" id="exampleInputEmail1"
                                             placeholder="Input kemasan's name">
                                     </div>
                                     <div class="form-group">
-                                        <label for="exampleInputEmail1">Harga</label>
-                                        <input value="{{ $obat->harga }}" type="number" name="harga" class="form-control" id="exampleInputEmail1"
-                                            placeholder="Input the price">
-                                    </div>
+    <label for="id_obat">Pilih Obat</label>
+    <select 
+    class="form-control text-danger" 
+    id="id_obat" 
+    name="id_obat[]" 
+    multiple 
+    required
+    style="min-height: 100px;"
+>
+        
+        @foreach ($obats as $obat)
+        <option value="{{ $obat->id }}" {{ in_array($obat->id, $selectedObats) ? 'selected' : '' }}>
+    {{ $obat->nama_obat }} - {{ $obat->kemasan }} - Rp. {{ $obat->harga }}
+</option>
+
+        @endforeach
+    </select>
+
+    @error('id_obat')
+        <span class="text-danger">{{ $message }}</span>
+    @enderror
+
+    <small class="text-muted">Tekan CTRL (atau CMD di Mac) untuk memilih lebih dari satu.</small>
+</div>
+
+
+
+
+                                    
+
+
+                                   
                                 </div>
                                 <div class="card-footer">
-                                    <button type="submit" class="btn btn-primary">Update Obat</button>
+                                    <button type="submit" class="btn btn-primary">Update periksa</button>
                                 </div>
                             </form>
                         </div>

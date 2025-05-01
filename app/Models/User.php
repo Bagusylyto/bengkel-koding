@@ -11,9 +11,12 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     protected $fillable = [
-        'name',
+        'nama',
+        'alamat',
+        'no_hp',
         'email',
         'password',
+        'role',
     ];
 
     protected $hidden = [
@@ -32,7 +35,7 @@ class User extends Authenticatable
     /**
      * Relasi One to Many dengan tabel periksas sebagai pasien.
      */
-    public function periksasSebagaiPasien()
+    public function periksasPasien()
     {
         return $this->hasMany(Periksa::class, 'id_pasien');
     }
@@ -40,7 +43,7 @@ class User extends Authenticatable
     /**
      * Relasi One to Many dengan tabel periksas sebagai dokter.
      */
-    public function periksasSebagaiDokter()
+    public function periksasDokter()
     {
         return $this->hasMany(Periksa::class, 'id_dokter');
     }

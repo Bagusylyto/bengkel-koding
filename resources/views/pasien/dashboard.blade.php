@@ -26,6 +26,17 @@
                     </p>
                 </a>
             </li>
+            <li class="nav-item">
+                <form action={{route('auth.logout.post')}} method="post">
+                    @csrf
+                 <i class="nav-icon far fa-calendar-alt"></i>
+                 <button type="submit" class="nav-link ">
+                 <p>
+                   Logout
+                 </p>
+                </button>
+                </form>
+            </li>
         </ul>
     </nav>
     <!-- /.sidebar-menu -->
@@ -37,7 +48,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Selamat datang, Pasien[Nama]</h1>
+                    <h1 class="m-0">Selamat datang, {{ Auth::user()->nama }}</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                 </div><!-- /.col -->

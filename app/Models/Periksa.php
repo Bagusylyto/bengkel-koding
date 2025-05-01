@@ -13,8 +13,8 @@ class Periksa extends Model
         'id_pasien',
         'id_dokter',
         'tgl_periksa',
-        'catatan',
         'biaya_periksa',
+        'catatan',
     ];
 
     /**

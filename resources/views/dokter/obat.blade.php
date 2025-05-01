@@ -30,6 +30,17 @@
         </p>
       </a>
     </li>
+    <li class="nav-item">
+      <form action={{route('auth.logout.post')}} method="post">
+          @csrf
+      
+      <button type="submit" class="nav-link ">
+      <p>
+        Logout
+      </p>
+      </button>
+      </form>
+   </li>
 
 @endsection
 
