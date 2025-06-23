@@ -35,16 +35,26 @@ class User extends Authenticatable
     /**
      * Relasi One to Many dengan tabel periksas sebagai pasien.
      */
-    public function periksasPasien()
-    {
-        return $this->hasMany(Periksa::class, 'id_pasien');
-    }
+    // public function periksasPasien()
+    // {
+    //     return $this->hasMany(Periksa::class, 'id_pasien');
+    // }
 
     /**
      * Relasi One to Many dengan tabel periksas sebagai dokter.
      */
-    public function periksasDokter()
+    // public function periksasDokter()
+    // {
+    //     return $this->hasMany(Periksa::class, 'id_dokter');
+    // }
+
+    public function jadwalPeriksa()
     {
-        return $this->hasMany(Periksa::class, 'id_dokter');
+        return $this->hasMany(JadwalPeriksa::class, 'id_dokter');
+    }
+
+    public function daftarPoli()
+    {
+        return $this->hasMany(DaftarPoli::class, 'id_pasien');
     }
 }

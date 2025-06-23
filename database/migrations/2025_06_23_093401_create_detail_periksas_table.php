@@ -18,8 +18,8 @@ return new class extends Migration
             $table->timestamps();
 
             //Foreign key constraints
-            $table->foreign('id_periksa')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('id_obat')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('id_periksa')->references('id')->on('periksas')->onDelete('cascade');
+            $table->foreign('id_obat')->references('id')->on('obats')->onDelete('cascade');
         });
     }
 

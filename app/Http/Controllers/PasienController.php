@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Periksa;
 use App\Models\User;
+use App\Models\DaftarPoli;
+use App\Models\JadwalPeriksa;
 use App\Models\DetailPeriksa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,21 +14,26 @@ class PasienController extends Controller
 {
 
     public function dashboardPasien(){
-        $periksas = Periksa::all(); 
-        return view('pasien.dashboard', compact('periksas'));
+        return view('pasien.dashboard');
+        // $periksas = Periksa::all(); 
+        // return view('pasien.dashboard', compact('periksas'));
     }
 
     public function showPeriksas()
     {
-        $DetailPeriksas = DetailPeriksa::all(); 
-        $periksas = Periksa::where('id_pasien', Auth::user()->id)->get();
-       return view('pasien.riwayat', compact('DetailPeriksas', 'periksas'));
+        $daftarPoli = DaftarPoli::where('id_pasien', Auth::id())->with('periksa')->get();
+        return view('pasien.riwayat', compact('daftarPoli'));
+    //     $DetailPeriksas = DetailPeriksa::all(); 
+    //     $periksas = Periksa::where('id_pasien', Auth::user()->id)->get();
+    //    return view('pasien.riwayat', compact('DetailPeriksas', 'periksas'));
     }
 
     public function createPeriksa()
     {
-        $dokters = User::where('role', 'dokter')->get(); // Ambil semua dokter dari database
-        return view('pasien.periksa', compact('dokters'));
+         $jadwal = JadwalPeriksa::with('dokter')->get();
+        return view('pasien.periksa', compact('jadwal'));
+        // $dokters = User::where('role', 'dokter')->get(); // Ambil semua dokter dari database
+        // return view('pasien.periksa', compact('dokters'));
     }
 
     /**

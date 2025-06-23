@@ -23,7 +23,7 @@ class Obat extends Model
      * Relasi One to Many dengan tabel detail_periksas
      * Satu obat bisa terdapat di banyak detail_periksas
      */
-    public function detailPeriksas()
+    public function detailPeriksa()
     {
         return $this->hasMany(DetailPeriksa::class, 'id_obat');
     }

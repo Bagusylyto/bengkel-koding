@@ -11,23 +11,15 @@ use Illuminate\Support\Facades\Auth;
 
 class DokterController extends Controller
 {
-    // protected $userID = 1;
-
-    // public function index()
-    // {
-    //     $dokter = User::where('id', $this->userID)->first();
-    //     $namaDokter = $dokter->nama;
-    //     return view('dokter.dashboard',compact('namaDokter'));
-    // }
-
     public function dashboardDokter()
     {
-        $dokter = User::where('id', Auth::user()->id)->first();
-        $namaDokter = $dokter->nama;
-        $periksas = Periksa::all(); 
-        // $periksas = Periksa::where('id_dokter', Auth::user()->id)->get();
-        $obats = Obat::all(); 
-        return view('dokter.dashboard', compact('namaDokter', 'periksas', 'obats'));
+        return view('dokter.dashboard');
+        // $dokter = User::where('id', Auth::user()->id)->first();
+        // $namaDokter = $dokter->nama;
+        // $periksas = Periksa::all(); 
+        // // $periksas = Periksa::where('id_dokter', Auth::user()->id)->get();
+        // $obats = Obat::all(); 
+        // return view('dokter.dashboard', compact('namaDokter', 'periksas', 'obats'));
     }
     
     public function showObat()

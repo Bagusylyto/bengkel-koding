@@ -6,7 +6,7 @@
         <i class="nav-icon fas fa-tachometer-alt"></i>
         <p>
           Dashboard
-          <i class="right fas fa-angle-left"></i>
+          <span class="right badge badge-danger">Dokter</span>
         </p>
       </a>
     </li>
@@ -15,8 +15,8 @@
       <a href="/dokter/periksa" class="nav-link {{ Request::is('dokter/periksa*') ? 'active' : '' }}">
         <i class="nav-icon fas fa-th"></i>
         <p>
-          Periksa
-          <span class="right badge badge-danger">New</span>
+          Jadwal Periksa
+          <span class="right badge badge-danger">Dokter</span>
         </p>
       </a>
     </li>
@@ -25,11 +25,32 @@
       <a href="/dokter/obat" class="nav-link {{ Request::is('dokter/obat*') ? 'active' : '' }}">
         <i class="nav-icon far fa-calendar-alt"></i>
         <p>
-          Obat
-          <span class="badge badge-info right">{{ $obats->count() }}</span>
+          Memeriksa Pasien
+          <span class="right badge badge-danger">Dokter</span>
         </p>
       </a>
     </li>
+
+    <li class="nav-item">
+      <a href="/dokter/obat" class="nav-link {{ Request::is('dokter/obat*') ? 'active' : '' }}">
+        <i class="nav-icon far fa-calendar-alt"></i>
+        <p>
+          Riwayat Pasien
+          <span class="right badge badge-danger">Dokter</span>
+        </p>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a href="/dokter/obat" class="nav-link {{ Request::is('dokter/obat*') ? 'active' : '' }}">
+        <i class="nav-icon far fa-calendar-alt"></i>
+        <p>
+          Profil Pasien
+          <span class="right badge badge-danger">Dokter</span>
+        </p>
+      </a>
+    </li>
+
     <li class="nav-item">
       <form action={{route('auth.logout.post')}} method="post">
           @csrf
@@ -49,7 +70,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Selamat Datang, {{ $namaDokter }}</h1>
+            <h1 class="m-0">Selamat Datang, {{ Auth::user()->nama }}</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">

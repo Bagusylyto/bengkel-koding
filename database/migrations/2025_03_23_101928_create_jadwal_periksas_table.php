@@ -11,17 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('periksas', function (Blueprint $table) {
+        Schema::create('jadwal_periksas', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_pasien');
             $table->unsignedBigInteger('id_dokter');
-            $table->dateTime('tgl_periksa');
-            $table->text('catatan')->nullable();
-            $table->integer('biaya_periksa')->default(0);
+            $table->enum('hari',['Senin','Selasa','Rabu','Kamis','Jumat','Sabtu']);
+            $table->time('jam_mulai');
+            $table->time('jam_selesai');
             $table->timestamps();
 
-            //Foreign key constraints
-            $table->foreign('id_pasien')->references('id')->on('users')->onDelete('cascade');
+             //Foreign key constraints
             $table->foreign('id_dokter')->references('id')->on('users')->onDelete('cascade');
         });
     }
@@ -31,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('periksas');
+        Schema::dropIfExists('jadwal_periksas');
     }
 };

@@ -37,6 +37,8 @@ class AuthController extends Controller
             }
             elseif (Auth::user()->role == 'pasien') {
                 return redirect()->route('pasien.dashboard');
+            } elseif (Auth::user()->role == 'admin') {
+                return redirect()->route('admin.dashboard');
             }
             else {
                 return redirect()->route('login');
@@ -57,7 +59,7 @@ class AuthController extends Controller
             'no_hp' => 'required|string|max:15|regex:/^([0-9\s\-\+\(\)]*)$/',
             'email' => 'required|string|email|max:255|unique:users,email',
             'password' => 'required|string|min:8',
-            'role' => 'required|in:pasien,dokter',
+            'role' => 'required|in:pasien', //dokter,admin
             // 'terms' => 'accepted',
         ]);
 
