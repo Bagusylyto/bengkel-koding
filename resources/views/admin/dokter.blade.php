@@ -3,7 +3,7 @@
 @section('sidebar')
 
     <li class="nav-item">
-      <a href="/admin" class="nav-link {{ Request::is('/admin/obat') ? 'active' : '' }}">
+      <a href="/admin" class="nav-link {{ Request::is('/admin') ? 'active' : '' }}">
         <i class="nav-icon fas fa-th"></i>
         <p>
           Dashboard
@@ -95,25 +95,39 @@
                 <h3 class="card-title">Tambah / Edit Dokter</h3>
               </div> --}}
               <div class="card-body">
-                <form action="{{ route('admin.dokterList') }}" method="POST">
+                <form action="{{ route('admin.dokterStore') }}" method="POST">
                   @csrf
                   <div class="form-group">
-                    <label for="nama_obat">Nama Dokter</label>
-                    <input type="text" name="nama_dokter" class="form-control" placeholder="Nama Dokter" required>
+                    <label for="nama">Nama Dokter</label>
+                    <input type="text" name="nama" class="form-control" placeholder="Nama Dokter" required>
                   </div>
                   <div class="form-group">
-                    <label for="kemasan">Alamat</label>
-                    <input type="text" name="kemasan" class="form-control" placeholder="Alamat" required>
+                    <label for="alamat">Alamat</label>
+                    <input type="text" name="alamat" class="form-control" placeholder="Alamat" required>
                   </div>
                   <div class="form-group">
-                    <label for="harga">No_Hp</label>
-                    <input type="number" name="harga" class="form-control" placeholder="No Hp" required>
+                    <label for="no_hp">No_Hp</label>
+                    <input type="number" name="no_hp" class="form-control" placeholder="No Hp" required>
                   </div>
                   <div class="form-group">
-                    <label for="harga">Poli</label>
-                    <input type="number" name="harga" class="form-control" placeholder="Input poli's" required>
+                    <label for="email">Email</label>
+                    <input type="text" name="email" id="email" class="form-control" placeholder="email@gmail.com" required>
                   </div>
-                  <button type="submit" class="btn btn-primary">Simpan</button>
+                  <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" class="form-control" placeholder="****" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="id_poli">Poli</label>
+                    {{-- <input type="name" name="harga" class="form-control" placeholder="Input Poli" required> --}}
+                    <select name="id_poli" id="id_poli" class="form-control" required>
+                    <option value="">Pilih Poli</option>
+                      @foreach ($poli as $polis)
+                        <option value="{{ $polis->id }}">{{ $polis->nama_poli }}</option>
+                      @endforeach
+                    </select>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Tambah Dokter</button>
                 </form>
               </div>
             </div>
@@ -121,7 +135,7 @@
             <!-- Tabel List Obat -->
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Dokter</h3>
+                <h3 class="card-title">List Dokter</h3>
 
                 <div class="card-tools">
                   <div class="input-group input-group-sm" style="width: 150px;">
@@ -148,19 +162,18 @@
                     </tr>
                   </thead>
                   <tbody>
-                    @foreach ($dokters as $dokter)
+                    @foreach ($dokter as $dokters)
                     <tr>
                         <td>{{$loop->iteration}}</td>
-                        <td>{{$dokter->id}}</td>
-                        <td>{{$dokter->nama}}</td>
-                        <td>{{$dokter->alamat}}</td>
-                        <td>{{$dokter->no_hp}}</td>
-                        <td>{{$dokter->poli}}</td>
+                        <td>{{$dokters->nama}}</td>
+                        <td>{{$dokters->alamat}}</td>
+                        <td>{{$dokters->no_hp}}</td>
+                        <td>{{$dokters->poli->nama_poli}}</td>
                         <td>
-                          <a href="{{ route('admin.dokterEdit', $dokter->id) }}" class="btn btn-warning btn-sm">
+                          <a href="{{ route('admin.dokterEdit', $dokters->id) }}" class="btn btn-warning btn-sm">
                             <i class="fas fa-edit"></i> Edit
                           </a>
-                          <form action="{{ route('admin.dokterDelete', $dokter->id) }}" method="POST" style="display:inline;">
+                          <form action="{{ route('admin.dokterDelete', $dokters->id) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus obat ini?');">

@@ -143,18 +143,17 @@
                     </tr>
                   </thead>
                   <tbody>
-                    @foreach ($obats as $obat)
+                    @foreach ($obat as $obats)
                     <tr>
                         <td>{{$loop->iteration}}</td>
-                        <td>{{$obat->id}}</td>
-                        <td>{{$obat->nama_obat}}</td>
-                        <td>{{$obat->kemasan}}</td>
-                        <td>{{$obat->harga}}</td>
+                        <td>{{$obats->nama_obat}}</td>
+                        <td>{{$obats->kemasan}}</td>
+                        <td>{{$obats->harga}}</td>
                         <td>
-                          <a href="{{ route('admin.obatEdit', $obat->id) }}" class="btn btn-warning btn-sm">
+                          <a href="{{ route('admin.obatEdit', $obats->id) }}" class="btn btn-warning btn-sm">
                             <i class="fas fa-edit"></i> Edit
                           </a>
-                          <form action="{{ route('admin.obatDelete', $obat->id) }}" method="POST" style="display:inline;">
+                          <form action="{{ route('admin.obatDelete', $obats->id) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus obat ini?');">

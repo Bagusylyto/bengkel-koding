@@ -10,13 +10,17 @@ class Obat extends Model
     use HasFactory;
 
     // Nama tabel di database (opsional, jika tidak sama dengan plural model)
-    protected $table = 'obats';
+    protected $table = 'obat';
 
     // Kolom yang bisa diisi secara massal
     protected $fillable = [
         'nama_obat',
         'kemasan',
         'harga',
+    ];
+
+    protected $casts = [
+        'harga' => 'decimal:2',
     ];
 
     /**
@@ -26,5 +30,12 @@ class Obat extends Model
     public function detailPeriksa()
     {
         return $this->hasMany(DetailPeriksa::class, 'id_obat');
+    }
+
+    public function periksa()
+    {
+        return $this->belongsToMany(Periksa::class, 'detail_periksa', 'obat_id', 'periksa_id')
+                    ->withPivot('jumlah')
+                    ->withTimestamps();
     }
 }

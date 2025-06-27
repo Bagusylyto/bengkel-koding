@@ -13,21 +13,31 @@ class ObatSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('obats')->insert([
+        DB::table('obat')->insert([
             [
-                'nama_obat' => 'Paracetamol',
-                'kemasan' => 'Tablet 500 mg',
+                'nama_obat' => 'Paracetamol 500mg',
+                'kemasan' => 'Tablet',
+                'harga' => 5000
+            ],
+            [
+                'nama_obat' => 'Amoxicillin 500mg',
+                'kemasan' => 'Kapsul',
+                'harga' => 8000
+            ],
+            [
+                'nama_obat' => 'OBH Combi',
+                'kemasan' => 'Sirup 60ml',
+                'harga' => 12000
+            ],
+            [
+                'nama_obat' => 'Antasida DOEN',
+                'kemasan' => 'Tablet',
                 'harga' => 3000
             ],
             [
-                'nama_obat' => 'Amoxcillin',
-                'kemasan' => 'Kapsul 500 mg',
-                'harga' => 3500
-            ],
-            [
-                'nama_obat' => 'Vitamin C',
-                'kemasan' => 'Tablet 100 mg',
-                'harga' => 2500
+                'nama_obat' => 'Vitamin C 500mg',
+                'kemasan' => 'Tablet',
+                'harga' => 2000
             ]
         ]);
     }

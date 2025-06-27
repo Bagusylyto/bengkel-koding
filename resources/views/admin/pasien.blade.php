@@ -3,7 +3,7 @@
 @section('sidebar')
 
     <li class="nav-item">
-      <a href="/admin" class="nav-link {{ Request::is('/admin/obat') ? 'active' : '' }}">
+      <a href="/admin" class="nav-link {{ Request::is('/admin/pasien') ? 'active' : '' }}">
         <i class="nav-icon fas fa-th"></i>
         <p>
           Dashboard
@@ -95,29 +95,37 @@
                 <h3 class="card-title">Form Tambah Obat</h3>
               </div> --}}
               <div class="card-body">
-                <form action="{{ route('admin.pasienList') }}" method="POST">
+                <form action="{{ route('admin.pasienStore') }}" method="POST">
                   @csrf
                   <div class="form-group">
-                    <label for="nama_obat">Nama Pasien</label>
-                    <input type="text" name="nama_pasien" class="form-control" placeholder="Nama Pasien" required>
+                    <label for="nama">Nama Pasien</label>
+                    <input type="text" name="nama" class="form-control" placeholder="Nama Pasien" required>
                   </div>
                   <div class="form-group">
-                    <label for="kemasan">Alamat</label>
+                    <label for="email">Email</label>
+                    <input type="text" name="email" id="email" class="form-control" placeholder="email@gmail.com" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" class="form-control" placeholder="******" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="alamat">Alamat</label>
                     <input type="text" name="alamat" class="form-control" placeholder="Alamat" required>
                   </div>
                   <div class="form-group">
-                    <label for="harga">Nomor KTP</label>
-                    <input type="number" name="no_ktp" class="form-control" placeholder="No KTP" required>
+                    <label for="no_ktp">Nomor KTP</label>
+                    <input type="text" name="no_ktp" class="form-control" placeholder="No KTP" required>
                   </div>
                   <div class="form-group">
-                    <label for="harga">Nomor Hp</label>
-                    <input type="number" name="no_hp" class="form-control" placeholder="No Hp" required>
+                    <label for="no_hp">Nomor Hp</label>
+                    <input type="text" name="no_hp" class="form-control" placeholder="No Hp" required>
                   </div>
                   <div class="form-group">
-                    <label for="harga">Nomor RM</label>
-                    <input type="number" name="no_rm" class="form-control" placeholder="No RM" required>
+                    <label for="no_rm">Nomor RM</label>
+                    <input type="text" name="no_rm" class="form-control" placeholder="No RM" value="{{ $no_rm }}" required>
                   </div>
-                  <button type="submit" class="btn btn-primary">Simpan</button>
+                  <button type="submit" class="btn btn-primary">Tambah Pasien</button>
                 </form>
               </div>
             </div>
@@ -153,20 +161,19 @@
                     </tr>
                   </thead>
                   <tbody>
-                    @foreach ($pasiens as $pasien)
+                    @foreach ($pasien as $pasiens)
                     <tr>
                         <td>{{$loop->iteration}}</td>
-                        <td>{{$pasien->id}}</td>
-                        <td>{{$pasien->nama_pasien}}</td>
-                        <td>{{$pasien->alamat}}</td>
-                        <td>{{$pasien->no_ktp}}</td>
-                        <td>{{$pasien->no_hp}}</td>
-                        <td>{{$pasien->no_rm}}</td>
+                        <td>{{$pasiens->nama}}</td>
+                        <td>{{$pasiens->alamat}}</td>
+                        <td>{{$pasiens->no_ktp}}</td>
+                        <td>{{$pasiens->no_hp}}</td>
+                        <td>{{$pasiens->no_rm}}</td>
                         <td>
-                          <a href="{{ route('admin.pasienEdit', $pasien->id) }}" class="btn btn-warning btn-sm">
+                          <a href="{{ route('admin.pasienEdit', $pasiens->id) }}" class="btn btn-warning btn-sm">
                             <i class="fas fa-edit"></i> Edit
                           </a>
-                          <form action="{{ route('admin.pasienDelete', $pasien->id) }}" method="POST" style="display:inline;">
+                          <form action="{{ route('admin.pasienDelete', $pasiens->id) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus obat ini?');">

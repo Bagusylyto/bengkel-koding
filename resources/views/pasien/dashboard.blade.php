@@ -9,27 +9,22 @@
                     <i class="nav-icon fas fa-tachometer-alt"></i>
                     <p>
                         Dashboard
+                        <span class="right badge badge-warning">pasien</span>
                     </p>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{ route('pasien.periksa') }}" class="nav-link ">
+                <a href="{{ route('pasien.daftar') }}" class="nav-link {{ Request::is('pasien/daftar*') ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-user-plus"></i>
                     <p>
-                        Periksa
+                        Poli
+                        <span class="right badge badge-warning">pasien</span>
                     </p>
                 </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ route('pasien.riwayat') }}" class="nav-link ">
-                    <p>
-                        Riwayat
-                    </p>
-                </a>
-            </li>
+            </li>            
             <li class="nav-item">
                 <form action={{route('auth.logout.post')}} method="post">
                     @csrf
-                 <i class="nav-icon far fa-calendar-alt"></i>
                  <button type="submit" class="nav-link ">
                  <p>
                    Logout

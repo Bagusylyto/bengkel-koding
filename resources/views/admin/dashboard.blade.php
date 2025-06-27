@@ -2,7 +2,7 @@
 
 @section('sidebar')
     <li class="nav-item">
-      <a href="{{ route('pasien.dashboard') }}" class="nav-link active">
+      <a href="{{ route('admin.dashboard') }}" class="nav-link active">
         <i class="nav-icon fas fa-th"></i>
         <p>
           Dashboard

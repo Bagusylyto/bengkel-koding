@@ -10,17 +10,18 @@ class DetailPeriksa extends Model
     use HasFactory;
 
     // Nama tabel di database (opsional jika tidak sesuai konvensi plural model)
-    protected $table = 'detail_periksas';
+    protected $table = 'detail_periksa';
 
     // Kolom yang bisa diisi secara massal
     protected $fillable = [
         'id_periksa',
         'id_obat',
+        'jumlah',
     ];
 
     /**
      * Relasi Many to One ke model Periksa
-     * Banyak detail_periksas bisa dimiliki satu periksa
+     * Banyak detail_periksa bisa dimiliki satu periksa
      */
     public function periksa()
     {
@@ -29,7 +30,7 @@ class DetailPeriksa extends Model
 
     /**
      * Relasi Many to One ke model Obat
-     * Banyak detail_periksas bisa memiliki satu obat
+     * Banyak detail_periksa bisa memiliki satu obat
      */
     public function obat()
     {

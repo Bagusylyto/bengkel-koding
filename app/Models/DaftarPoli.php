@@ -9,15 +9,20 @@ class DaftarPoli extends Model
 {
     use HasFactory;
 
+    protected $table = 'daftar_poli';
+    protected $primaryKey = 'id';
+    public $timestamps = true;
+
     protected $fillable = [
         'id_pasien',
         'id_jadwal',
         'keluhan',
         'no_antrian',
+        'status',
     ];
 
     public function pasien() {
-        return $this->belongsTo(User::class, 'id_pasien');
+        return $this->belongsTo(User::class, 'id_pasien')->where('role','pasien');
     }
 
     public function jadwalPeriksa() {

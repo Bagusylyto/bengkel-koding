@@ -9,12 +9,17 @@ class Poli extends Model
 {
     use HasFactory;
 
+    protected $table = 'poli';
+    protected $primaryKey = 'id';
+    public $timestamps = true;
+
     protected $fillable = [
         'nama_poli',
         'keterangan',
     ];
 
-    // public function poli() {
-    //     return $this->hasMany(Poli::class, 'id_poli');
-    // }
+    public function dokter()
+    {
+        return $this->hasMany(User::class, 'id_poli')->where('role','dokter');
+    }
 }

@@ -97,7 +97,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE | RegistrasiPage</title>
+  <title>Register | Akun</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -111,7 +111,7 @@
 <body class="hold-transition register-page">
 <div class="register-box">
   <div class="register-logo">
-    <a href="/"><b>Admin</b> LTE</a>
+    <a href="/"><b>Poli</b> klinik</a>
   </div>
 
   <div class="card">
@@ -167,6 +167,17 @@
           @enderror
         </div>
         <div class="input-group mb-3">
+          <input type="text" class="form-control @error('no_ktp') is-invalid @enderror" name="no_ktp" placeholder="Nomor KTP" value="{{ old('no_ktp') }}" required>
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-phone"></span>
+            </div>
+          </div>
+          @error('no_ktp')
+            <div class="invalid-feedback">{{ $message }}</div>
+          @enderror
+        </div>
+        <div class="input-group mb-3">
           <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" placeholder="Email" value="{{ old('email') }}" required>
           <div class="input-group-append">
             <div class="input-group-text">
@@ -196,21 +207,6 @@
             </div>
           </div>
           @error('password_confirmation')
-            <div class="invalid-feedback">{{ $message }}</div>
-          @enderror
-        </div>
-        <div class="input-group mb-3">
-          <select class="form-control @error('role') is-invalid @enderror" name="role" required>
-            <option value="" disabled selected>Pilih Role</option>
-            <option value="pasien" {{ old('role') == 'pasien' ? 'selected' : '' }}>Pasien</option>
-            {{-- <option value="dokter" {{ old('role') == 'dokter' ? 'selected' : '' }}>Dokter</option> --}}
-          </select>
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-user-tag"></span>
-            </div>
-          </div>
-          @error('role')
             <div class="invalid-feedback">{{ $message }}</div>
           @enderror
         </div>

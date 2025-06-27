@@ -3,7 +3,7 @@
 @section('sidebar')
 
     <li class="nav-item">
-      <a href="/admin" class="nav-link {{ Request::is('/admin/dokter') ? 'active' : '' }}">
+      <a href="/admin" class="nav-link {{ Request::is('/admin/poli') ? 'active' : '' }}">
         <i class="nav-icon fas fa-th"></i>
         <p>
           Dashboard
@@ -95,14 +95,14 @@
                 <h3 class="card-title">Form Tambah Obat</h3>
               </div> --}}
               <div class="card-body">
-                <form action="{{ route('admin.poliList') }}" method="POST">
+                <form action="{{ route('admin.poliStore') }}" method="POST">
                   @csrf
                   <div class="form-group">
-                    <label for="nama_obat">Nama Poli</label>
+                    <label for="nama_poli">Nama Poli</label>
                     <input type="text" name="nama_poli" class="form-control" placeholder="Nama Poli" required>
                   </div>
                   <div class="form-group">
-                    <label for="kemasan">Keterangan</label>
+                    <label for="keterangan">Keterangan</label>
                     <input type="text" name="keterangan" class="form-control" placeholder="Keterangan" required>
                   </div>
                   <button type="submit" class="btn btn-primary">Simpan</button>
@@ -138,17 +138,16 @@
                     </tr>
                   </thead>
                   <tbody>
-                    @foreach ($polis as $poli)
+                    @foreach ($poli as $polis)
                     <tr>
                         <td>{{$loop->iteration}}</td>
-                        <td>{{$poli->id}}</td>
-                        <td>{{$poli->nama_poli}}</td>
-                        <td>{{$poli->keterangan}}</td>
+                        <td>{{$polis->nama_poli}}</td>
+                        <td>{{$polis->keterangan}}</td>
                         <td>
-                          <a href="{{ route('admin.poliEdit', $poli->id) }}" class="btn btn-warning btn-sm">
+                          <a href="{{ route('admin.poliEdit', $polis->id) }}" class="btn btn-warning btn-sm">
                             <i class="fas fa-edit"></i> Edit
                           </a>
-                          <form action="{{ route('admin.poliDelete', $poli->id) }}" method="POST" style="display:inline;">
+                          <form action="{{ route('admin.poliDelete', $polis->id) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus obat ini?');">

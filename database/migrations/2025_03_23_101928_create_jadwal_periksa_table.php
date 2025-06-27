@@ -11,15 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('jadwal_periksas', function (Blueprint $table) {
+        Schema::create('jadwal_periksa', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_dokter');
             $table->enum('hari',['Senin','Selasa','Rabu','Kamis','Jumat','Sabtu']);
             $table->time('jam_mulai');
             $table->time('jam_selesai');
+            $table->enum('status',['aktif', 'nonaktif'])->default('nonaktif');
             $table->timestamps();
 
-             //Foreign key constraints
+            //  //Foreign key constraints
             $table->foreign('id_dokter')->references('id')->on('users')->onDelete('cascade');
         });
     }
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('jadwal_periksas');
+        Schema::dropIfExists('jadwal_periksa');
     }
 };

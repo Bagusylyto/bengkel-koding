@@ -57,19 +57,28 @@ class AuthController extends Controller
             'nama' => 'required|string|max:255',
             'alamat' => 'required|string|max:255',
             'no_hp' => 'required|string|max:15|regex:/^([0-9\s\-\+\(\)]*)$/',
+            'no_ktp' => 'required|string|unique:users,no_ktp',
             'email' => 'required|string|email|max:255|unique:users,email',
             'password' => 'required|string|min:8',
-            'role' => 'required|in:pasien', //dokter,admin
+            // 'role' => 'required|in:pasien', //Hanya bisa pasien yang login   //dokter,admin
             // 'terms' => 'accepted',
         ]);
 
+        // Hitung jumlah pasien yang sudah ada
+        $jumlahPasien = User::where('role', 'pasien')->count() + 1;
+        
+        // Format no_rm: YYYYMM-XXX
+        $no_rm = now()->format('Ym') . '-' . str_pad($jumlahPasien, 3, '0', STR_PAD_LEFT);
+
         User::create([
             'nama' => $validateData['nama'],
-            'alamat' => $validateData['alamat'],
-            'no_hp' => $validateData['no_hp'],
             'email' => $validateData['email'],
             'password' => bcrypt($validateData['password']), // Enkripsi password
-            'role' => $validateData['role'],
+            'alamat' => $validateData['alamat'],
+            'no_hp' => $validateData['no_hp'],
+            'no_ktp' => $validateData['no_ktp'],
+            'role' => 'pasien', // Hanya bisa pasien yang mendaftar
+            'no_rm' => $no_rm,
         ]);
 
         return redirect()->route('login')->with('success', 'Akun berhasil dibuat!');

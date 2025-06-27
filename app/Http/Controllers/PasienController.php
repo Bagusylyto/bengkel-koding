@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Periksa;
 use App\Models\User;
+use App\Models\Poli;
 use App\Models\DaftarPoli;
 use App\Models\JadwalPeriksa;
 use App\Models\DetailPeriksa;
@@ -12,53 +13,65 @@ use Illuminate\Support\Facades\Auth;
 
 class PasienController extends Controller
 {
-
     public function dashboardPasien(){
-        return view('pasien.dashboard');
-        // $periksas = Periksa::all(); 
-        // return view('pasien.dashboard', compact('periksas'));
+        $periksa = Periksa::all(); 
+        return view('pasien.dashboard', compact('periksa'));
     }
 
-    public function showPeriksas()
+    public function indexDaftar()
     {
-        $daftarPoli = DaftarPoli::where('id_pasien', Auth::id())->with('periksa')->get();
-        return view('pasien.riwayat', compact('daftarPoli'));
-    //     $DetailPeriksas = DetailPeriksa::all(); 
-    //     $periksas = Periksa::where('id_pasien', Auth::user()->id)->get();
-    //    return view('pasien.riwayat', compact('DetailPeriksas', 'periksas'));
+        $poli = Poli::all();
+        $jadwal = JadwalPeriksa::with('dokter')->get();
+        $riwayat = DaftarPoli::with('jadwalPeriksa.dokter.poli')->where('id_pasien', Auth::id())->get();
+        return view('pasien.daftar', compact('poli', 'jadwal', 'riwayat'));
     }
 
-    public function createPeriksa()
+    public function showPoli(Request $request)
     {
-         $jadwal = JadwalPeriksa::with('dokter')->get();
-        return view('pasien.periksa', compact('jadwal'));
-        // $dokters = User::where('role', 'dokter')->get(); // Ambil semua dokter dari database
-        // return view('pasien.periksa', compact('dokters'));
+        $poli = Poli::all();
+        $selectedPoliId = $request->input('id_poli');
+        $jadwal = JadwalPeriksa::with('dokter')
+            ->when($selectedPoliId, function ($query) use ($selectedPoliId) {
+                return $query->whereHas('dokter.poli', function ($query) use ($selectedPoliId) {
+                    $query->where('id', $selectedPoliId);
+                });
+            })
+            ->get();
+
+        if ($request->ajax()) {
+            return response()->json(['jadwal' => $jadwal]);
+        }
+
+        return view('pasien.daftar', compact('poli', 'jadwal'));
     }
 
-    /**
-     * Menyimpan data pemeriksaan baru ke database.
-     */
-    public function storePeriksa(Request $request)
+    public function storeDaftar(Request $request)
     {
-        // Validasi input
-        $validated = $request->validate([
-            'id_dokter' => 'required|exists:users,id,role,dokter',
-            'tgl_periksa' => 'required|date|after:now',
+        $request->validate([
+            'id_poli' => 'required|exists:poli,id',
+            'id_jadwal' => 'required|exists:jadwal_periksa,id',
+            'keluhan' => 'required|string|max:1000',
         ]);
 
-        // Simpan data pemeriksaan
-        Periksa::create([
-            'id_pasien' => Auth::user()->id,
-            'id_dokter' => $request->id_dokter,
-            'tgl_periksa' => $request->tgl_periksa,
-            'biaya_periksa' => 0, // Default, bisa diubah oleh dokter nanti
-            'catatan' => null, // Default, bisa diisi oleh dokter nanti
+        $no_antrian = DaftarPoli::where('id_jadwal', $request->id_jadwal)->max('no_antrian') + 1 ?? 1;
+        DaftarPoli::create([
+            'id_pasien' => Auth::id(),
+            'id_jadwal' => $request->id_jadwal,
+            'keluhan' => $request->keluhan,
+            'no_antrian' => $this->generateQueueNumber($request->id_jadwal),
         ]);
 
-        // Redirect ke halaman riwayat dengan pesan sukses
-        return redirect()->route('pasien.riwayat')->with('success', 'Pemeriksaan berhasil dijadwalkan!');
+        return redirect()->route('pasien.daftar')->with('success', 'Pendaftaran berhasil.');
     }
 
-   
+    public function indexPeriksa()
+    {
+        $periksa = Periksa::where('id_pasien', Auth::id())->with('detailPeriksa.obat')->get();
+        return view('pasien.riwayat', compact('periksa'));
+    }
+    
+    private function generateQueueNumber($id_jadwal)
+    {
+        return DaftarPoli::where('id_jadwal', $id_jadwal)->max('no_antrian') + 1 ?? 1;
+    }
 }

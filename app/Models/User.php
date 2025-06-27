@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
@@ -16,7 +17,10 @@ class User extends Authenticatable
         'no_hp',
         'email',
         'password',
+        'id_poli',
+        'no_ktp',
         'role',
+        'no_rm'
     ];
 
     protected $hidden = [
@@ -32,29 +36,18 @@ class User extends Authenticatable
         ];
     }
 
-    /**
-     * Relasi One to Many dengan tabel periksas sebagai pasien.
-     */
-    // public function periksasPasien()
-    // {
-    //     return $this->hasMany(Periksa::class, 'id_pasien');
-    // }
-
-    /**
-     * Relasi One to Many dengan tabel periksas sebagai dokter.
-     */
-    // public function periksasDokter()
-    // {
-    //     return $this->hasMany(Periksa::class, 'id_dokter');
-    // }
-
     public function jadwalPeriksa()
     {
-        return $this->hasMany(JadwalPeriksa::class, 'id_dokter');
+        return $this->hasMany(JadwalPeriksa::class, 'id_dokter')->where('role','dokter');
+    }
+
+    public function poli()
+    {
+        return $this->belongsTo(Poli::class, 'id_poli');
     }
 
     public function daftarPoli()
     {
-        return $this->hasMany(DaftarPoli::class, 'id_pasien');
+        return $this->hasMany(DaftarPoli::class, 'id_pasien')->where('role','pasien');
     }
 }

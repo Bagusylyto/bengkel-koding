@@ -11,15 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('detail_periksas', function (Blueprint $table) {
+        Schema::create('detail_periksa', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_periksa');
             $table->unsignedBigInteger('id_obat');
+            $table->integer('jumlah')->default(1);
             $table->timestamps();
 
             //Foreign key constraints
-            $table->foreign('id_periksa')->references('id')->on('periksas')->onDelete('cascade');
-            $table->foreign('id_obat')->references('id')->on('obats')->onDelete('cascade');
+            $table->foreign('id_periksa')->references('id')->on('periksa')->onDelete('cascade');
+            $table->foreign('id_obat')->references('id')->on('obat')->onDelete('cascade');
         });
     }
 
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('detail_periksas');
+        Schema::dropIfExists('detail_periksa');
     }
 };

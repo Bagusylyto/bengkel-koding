@@ -16,10 +16,13 @@ return new class extends Migration
             $table->string('nama', 255);
             $table->string('alamat', 255)->nullable();
             $table->string('no_hp', 50)->unique();
+            $table->string('no_ktp', 255)->nullable(); // Untuk Pasien
+            $table->string('no_rm')->nullable()->unique(); // Nomor Rekam Medis untuk pasien
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->enum('role',['pasien','dokter','admin'])->default('pasien');
+            $table->enum('role',['admin','pasien','dokter'])->default('pasien');
+            $table->unsignedBigInteger('id_poli')->nullable(); // Untuk dokter, foreign key ke poli
             $table->rememberToken();
             $table->timestamps();
         });

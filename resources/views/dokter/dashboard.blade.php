@@ -2,7 +2,7 @@
 @section('sidebar')
 
     <li class="nav-item menu-open">
-      <a href="#" class="nav-link {{ Request::is('/') ? 'active' : '' }}">
+      <a href="{{ route('dokter.dashboard') }}" class="nav-link active">
         <i class="nav-icon fas fa-tachometer-alt"></i>
         <p>
           Dashboard
@@ -12,7 +12,7 @@
     </li>
 
     <li class="nav-item">
-      <a href="/dokter/periksa" class="nav-link {{ Request::is('dokter/periksa*') ? 'active' : '' }}">
+      <a href="{{ route('dokter.jadwal')}}" class="nav-link {{ Request::is('dokter/jadwal*') ? 'active' : '' }}">
         <i class="nav-icon fas fa-th"></i>
         <p>
           Jadwal Periksa
@@ -22,7 +22,7 @@
     </li>
 
     <li class="nav-item">
-      <a href="/dokter/obat" class="nav-link {{ Request::is('dokter/obat*') ? 'active' : '' }}">
+      <a href="{{ route('dokter.periksa')}}" class="nav-link {{ Request::is('dokter/periksa*') ? 'active' : '' }}">
         <i class="nav-icon far fa-calendar-alt"></i>
         <p>
           Memeriksa Pasien
@@ -32,7 +32,7 @@
     </li>
 
     <li class="nav-item">
-      <a href="/dokter/obat" class="nav-link {{ Request::is('dokter/obat*') ? 'active' : '' }}">
+      <a href="{{route('dokter.riwayat')}}" class="nav-link {{ Request::is('dokter/riwayat*') ? 'active' : '' }}">
         <i class="nav-icon far fa-calendar-alt"></i>
         <p>
           Riwayat Pasien
@@ -42,10 +42,10 @@
     </li>
 
     <li class="nav-item">
-      <a href="/dokter/obat" class="nav-link {{ Request::is('dokter/obat*') ? 'active' : '' }}">
+      <a href="{{ route('dokter.profile')}}" class="nav-link {{ Request::is('dokter/profil*') ? 'active' : '' }}">
         <i class="nav-icon far fa-calendar-alt"></i>
         <p>
-          Profil Pasien
+          Profil
           <span class="right badge badge-danger">Dokter</span>
         </p>
       </a>
@@ -70,7 +70,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Selamat Datang, {{ Auth::user()->nama }}</h1>
+            <h1 class="m-0">{{ Auth::user()->nama }}</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">

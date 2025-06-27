@@ -11,17 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('daftar_polis', function (Blueprint $table) {
+        Schema::create('daftar_poli', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_pasien');
+            $table->unsignedBigInteger('id_pasien'); //referensi ke users dengan role pasien
             $table->unsignedBigInteger('id_jadwal');
             $table->text('keluhan');
-            $table->unsignedInteger('no_antrian');
+            $table->integer('no_antrian')->unsigned();
+            $table->enum('status',['menunggu','diperiksa','selesai'])->default('menunggu');
             $table->timestamps();
 
-             //Foreign key constraints
+            //  //Foreign key constraints
             $table->foreign('id_pasien')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('id_jadwal')->references('id')->on('jadwal_periksas')->onDelete('cascade');
+            $table->foreign('id_jadwal')->references('id')->on('jadwal_periksa')->onDelete('cascade');
         });
     }
 
@@ -30,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('daftar_polis');
+        Schema::dropIfExists('daftar_poli');
     }
 };
